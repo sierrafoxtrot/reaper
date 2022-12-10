@@ -43,7 +43,6 @@ def countdown_to_begin(seconds):
 
 # Display time elapsed and stats
 def timer():
-    # --- Timer going up ---
     # Calculate total seconds
     total_seconds = frame_count // frame_rate
 
@@ -80,11 +79,10 @@ while not done:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q: # Quit
                 done = True
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_SPACE: # toggle pause
+            elif event.key == pygame.K_SPACE: # toggle pause
                 running = not running
                 if running:
-                    pygame.mixer.music.play()
+                    pygame.mixer.music.unpause()
                 else:
                     pygame.mixer.music.pause()
 
