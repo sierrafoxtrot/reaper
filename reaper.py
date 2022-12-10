@@ -9,7 +9,6 @@ pygame.init()
 
 # Set the height and width of the screen
 size = [700, 500]
-#screen = pygame.display.set_mode(size)
 screen = pygame.display.set_mode((size), pygame.FULLSCREEN)
 
 pygame.display.set_caption("The Repeaer")
@@ -36,9 +35,14 @@ background_sound = './party.ogg'
 pygame.mixer.init()
 pygame.mixer.music.load(background_sound)
 
+# Display a "get ready to start" countdown
+def countdown_to_begin(seconds):
+    output_string = "{0:2}".format(seconds)
+    text = big_font.render(output_string, True, FOREGROUND)
+    screen.blit(text, [200,150])
 
+# Display time elapsed and stats
 def timer():
-    print("tick")
     # --- Timer going up ---
     # Calculate total seconds
     total_seconds = frame_count // frame_rate
@@ -68,12 +72,6 @@ def timer():
 
     screen.blit(text, [50, 300])
 
-def countdown(seconds):
-    output_string = "{0:2}".format(seconds)
-    text = big_font.render(output_string, True, FOREGROUND)
-    screen.blit(text, [200,150])
-
-
 # Main Program Loop
 while not done:
     for event in pygame.event.get():  # User did something
@@ -97,7 +95,7 @@ while not done:
     if state == 1: # Initial count down to begin
         seconds_until_start = 10 - (frame_count // frame_rate)
 
-        countdown(seconds_until_start)
+        countdown_to_begin(seconds_until_start)
         if seconds_until_start <= 0:
             frame_count = 0
             state += 1
