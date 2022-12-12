@@ -24,7 +24,6 @@ big_font = pygame.font.Font(None, 400)
 
 frame_count = 0
 frame_rate = 60
-start_time = 90
 
 state = 1
 
@@ -85,6 +84,10 @@ while not done:
                     pygame.mixer.music.unpause()
                 else:
                     pygame.mixer.music.pause()
+            elif event.key == pygame.K_r:
+                pygame.mixer.music.stop()
+                frame_count = 0
+                state = 1
 
     # Set the screen background
     screen.fill(BACKGROUND)
