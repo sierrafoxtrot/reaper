@@ -8,7 +8,7 @@ FOREGROUND = pygame.colordict.THECOLORS["white"]
 pygame.init()
 
 # Set the height and width of the screen
-size = [700, 500]
+size = [0,0]
 screen = pygame.display.set_mode((size), pygame.FULLSCREEN)
 
 pygame.display.set_caption("The Repeaer")
@@ -19,14 +19,16 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-font = pygame.font.Font(None, 75)
-big_font = pygame.font.Font(None, 400)
+font = pygame.font.Font(None, 150)
+big_font = pygame.font.Font(None, 800)
 
 frame_count = 0
 frame_rate = 60
 
 state = 1
 
+survival_seconds = 0
+shock_delivered = False
 running = True
 
 # Provide background noise
@@ -41,7 +43,9 @@ def countdown_to_begin(seconds):
     screen.blit(text, [200,150])
 
 # Display time elapsed and stats
-def timer():
+def timer(freeze_survival):
+    global survival_seconds
+
     # Calculate total seconds
     total_seconds = frame_count // frame_rate
 
@@ -58,7 +62,10 @@ def timer():
     text = font.render(output_string, True, FOREGROUND)
     screen.blit(text, [50, 220])
 
-    survival_percentage = math.ceil(100 - (total_seconds / 6))
+    if not freeze_survival:
+        survival_seconds = total_seconds
+
+    survival_percentage = math.ceil(100 - (survival_seconds / 6))
     if survival_percentage < 0:
         survival_percentage = 0;
 
@@ -68,7 +75,7 @@ def timer():
     # Blit to the screen
     text = font.render(output_string, True, FOREGROUND)
 
-    screen.blit(text, [50, 300])
+    screen.blit(text, [50, 350])
 
 # Main Program Loop
 while not done:
@@ -87,7 +94,11 @@ while not done:
             elif event.key == pygame.K_r:
                 pygame.mixer.music.stop()
                 frame_count = 0
+                shock_delivered = False;
                 state = 1
+            elif event.key == pygame.K_RETURN:
+                shock_delivered = True
+
 
     # Set the screen background
     screen.fill(BACKGROUND)
@@ -107,7 +118,7 @@ while not done:
         state += 1
 
     elif state == 3: # Main run
-        timer()
+        timer(shock_delivered)
 
     # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
     if running:
