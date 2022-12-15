@@ -42,6 +42,7 @@ def countdown_to_begin(seconds):
     text = big_font.render(output_string, True, FOREGROUND)
     screen.blit(text, [200,150])
 
+
 # Display time elapsed and stats
 def timer(freeze_survival):
     global survival_seconds
@@ -77,6 +78,21 @@ def timer(freeze_survival):
 
     screen.blit(text, [50, 350])
 
+    if freeze_survival:
+	# Divide by 60 to get total minutes
+        minutes = survival_seconds // 60
+
+        # Use modulus (remainder) to get seconds
+        seconds = survival_seconds % 60
+
+        # Use python string formatting to format in leading zeros
+        output_string = "Time to first shock {0:02}:{1:02}".format(minutes, seconds)
+
+        # Blit to the screen
+        text = font.render(output_string, True, FOREGROUND)
+        screen.blit(text, [50, 480])
+
+
 # Main Program Loop
 while not done:
     for event in pygame.event.get():  # User did something
@@ -98,7 +114,6 @@ while not done:
                 state = 1
             elif event.key == pygame.K_RETURN:
                 shock_delivered = True
-
 
     # Set the screen background
     screen.fill(BACKGROUND)
